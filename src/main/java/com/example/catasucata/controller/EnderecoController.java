@@ -23,21 +23,32 @@ public class EnderecoController {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    // POST - Cadastrar um Endereço para um Cliente
+    // POST - Cadastrar Endereço para Cliente
     @PostMapping("/{clienteId}")
     public ResponseEntity<Endereco> cadastrarEndereco(
             @PathVariable Long clienteId,
             @RequestBody Endereco endereco
     ) {
-        Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        // Validar ID
+        if (clienteId == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        // Associa o cliente ao novo endereço
+        // Validar endereço enviado
+        if (endereco == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        // Buscar cliente
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + clienteId));
+
+        // Associar cliente
         endereco.setCliente(cliente);
 
-        // Salva o Endereço (isso atualizará o Endereco no Cliente devido ao CascadeType.ALL)
+        // Salvar endereço
         Endereco saved = enderecoRepository.save(endereco);
-        
+
         return ResponseEntity.status(201).body(saved);
     }
 }

@@ -26,55 +26,65 @@ public class PedidoService {
     @Autowired
     private ItemRepository itemRepository;
 
-
-    // Métodos de lógica de negócios virão aqui
-
     // 1. Método para simular a FINALIZAÇÃO DA COMPRA (Criação do Pedido)
-    @Transactional // Garante que a operação seja atômica (ou salva tudo ou não salva nada)
+    @Transactional
     public Pedido criarPedido(Long clienteId, List<ItemPedido> itensRecebidos) {
-        
-        // 1. Validar o Cliente (Usuário)
+
+        // 1. Validar ID do cliente
+        if (clienteId == null) {
+            throw new RuntimeException("ID do cliente não pode ser nulo");
+        }
+
+        // 2. Validar o Cliente
         Cliente cliente = clienteRepository.findById(clienteId)
-                                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        
-        // 2. Criar o novo Pedido
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + clienteId));
+
+        // 3. Criar o novo Pedido
         Pedido novoPedido = new Pedido(cliente);
-        
         Double valorTotal = 0.0;
 
         for (ItemPedido itemRecebido : itensRecebidos) {
-            
-            // 3. Validar e Buscar o Item (Produto)
-            Item produto = itemRepository.findById(itemRecebido.getItem().getId())
-                                .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + itemRecebido.getItem().getId()));
+
+            // 4. Validar ID do item (Movido para garantir que o produto não seja nulo)
+            if (itemRecebido == null || itemRecebido.getItem() == null || itemRecebido.getItem().getId() == null) {
+                throw new RuntimeException("Item inválido: o ID do produto não pode ser nulo.");
+            }
+
+            // 5. Buscar o Item (Produto)
+            Long itemId = itemRecebido.getItem().getId();
+            Item produto = itemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + itemId));
 
             Integer quantidadeComprada = itemRecebido.getQuantidade();
-            
-            // 4. Controle de Estoque (Validação)
+            if (quantidadeComprada == null || quantidadeComprada <= 0) {
+                throw new RuntimeException("Quantidade inválida para o produto: " + produto.getNome());
+            }
+
+            // 6. Controle de Estoque
             if (produto.getEstoque() < quantidadeComprada) {
                 throw new RuntimeException("Estoque insuficiente para o produto: " + produto.getNome());
             }
 
-            // 5. Atualizar o Estoque (Atualizar Estoque)
+            // 7. Atualizar Estoque
             produto.setEstoque(produto.getEstoque() - quantidadeComprada);
-            itemRepository.save(produto); // Salva o item com o novo estoque
-            
-            // 6. Configurar ItemPedido
+            itemRepository.save(produto);
+
+            // 8. Configurar ItemPedido para o Pedido
             itemRecebido.setPedido(novoPedido);
             itemRecebido.setItem(produto);
-            itemRecebido.setPrecoUnitario(produto.getPreco()); // Preço do momento da compra
-            
-            // 7. Calcular o Valor Total do Pedido
+            itemRecebido.setPrecoUnitario(produto.getPreco());
+
+            // 9. Calcular Valor Total
             valorTotal += produto.getPreco() * quantidadeComprada;
-            
-            // Adicionar ItemPedido à lista do novo pedido (para JPA salvar)
+
+            // 10. Adicionar o ItemPedido ao Pedido
             novoPedido.getItens().add(itemRecebido);
         }
 
-        // 8. Finalizar o Pedido (Calcular Valor Total)
+        // 11. Finalizar Pedido
         novoPedido.setValorTotal(valorTotal);
 
-        // 9. Salvar o Pedido e os ItensPedido
+        // 12. Salvar o Pedido e os Itens
         return pedidoRepository.save(novoPedido);
     }
 }

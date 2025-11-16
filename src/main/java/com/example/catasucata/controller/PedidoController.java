@@ -21,25 +21,17 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    // Endpoint para Finalizar Compra e Criar o Pedido
-    // Método: POST
-    // URL: http://localhost:8080/pedidos
-    // Este método implementa a maior parte da lógica do 'Finalizar Compra'
-    @PostMapping("/{clienteId}")
-    public ResponseEntity<Pedido> finalizarCompra(
+    @PostMapping("/{clienteId}") // <--- A ROTA CORRETA
+    public ResponseEntity<?> criarPedido(
             @PathVariable Long clienteId,
-            @RequestBody List<ItemPedido> itens
-    ) {
+            @RequestBody List<ItemPedido> itens) {
+
         try {
-            Pedido novoPedido = pedidoService.criarPedido(clienteId, itens);
-            // Retorna 201 Created (Criado com sucesso)
-            return ResponseEntity.status(201).body(novoPedido);
+            Pedido pedido = pedidoService.criarPedido(clienteId, itens);
+            return ResponseEntity.status(201).body(pedido);
         } catch (RuntimeException e) {
-            // Retorna 400 Bad Request se houver erro (Cliente não encontrado, Estoque insuficiente, etc.)
-            return ResponseEntity.badRequest().header("Error-Message", e.getMessage()).build();
+            // Retorna a mensagem de erro do service (ex: "Cliente não encontrado")
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
-    // Implementação pendente: GET /pedidos/{id} e GET para listar (Acompanhar pedido)
-    // Deixaremos o Controller simples para focar na funcionalidade de Finalização.
 }

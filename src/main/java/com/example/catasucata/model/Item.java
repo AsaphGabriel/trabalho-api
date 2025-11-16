@@ -1,15 +1,15 @@
 package com.example.catasucata.model;
 
-import java.util.List; // NOVO IMPORT
- 
+import java.util.List; 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id; // NOVO IMPORT
-import jakarta.persistence.OneToMany; // NOVO IMPORT
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Item {
@@ -25,12 +25,19 @@ public class Item {
     private Integer estoque; 
     
     // --- RELACIONAMENTO ADICIONADO E IGNORADO PARA QUEBRAR O CICLO ---
-    @JsonIgnore // <--- QUEBRA O CICLO: Item não precisa listar todos os ItemPedidos ao ser serializado.
+    @JsonIgnore 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itemPedidos;
 
     public Item() {
     }
+
+    // --- CONSTRUTOR DE CORREÇÃO ADICIONADO ---
+    // Construtor auxiliar para aceitar apenas o ID na requisição JSON
+    public Item(Long id) {
+        this.id = id;
+    }
+    // -----------------------------------------
 
     public Item(String nome, String descricao, double preco, Integer estoque) {
         this.nome = nome;
