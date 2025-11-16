@@ -1,0 +1,17 @@
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\CatasucataApplication.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\controller\ClienteController.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\controller\EnderecoController.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\controller\ItemController.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\controller\PedidoController.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\model\Cliente.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\model\Endereco.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\model\Item.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\model\ItemPedido.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\model\ItemPedidoId.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\model\Pedido.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\repository\ClienteRepository.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\repository\EnderecoRepository.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\repository\ItemPedidoRepository.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\repository\ItemRepository.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\repository\PedidoRepository.java
+C:\Users\asaph\Downloads\catasucata\catasucata\catasucata\src\main\java\com\example\catasucata\service\PedidoService.java

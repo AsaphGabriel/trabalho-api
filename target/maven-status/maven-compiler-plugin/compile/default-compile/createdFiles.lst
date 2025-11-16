@@ -1,0 +1,4 @@
+com\example\catasucata\model\Item.class
+com\example\catasucata\CatasucataApplication.class
+com\example\catasucata\controller\ItemController.class
+com\example\catasucata\repository\ItemRepository.class
